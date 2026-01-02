@@ -6,9 +6,8 @@ from .sql_execution import QueryMixin
 class Team(QueryBase):
     # Set the class attribute `name`
     # to the string "team"
-    #### YOUR CODE HERE
     name = "team"
-
+    primID =  "team_id"
     # Define a `names` method
     # that receives no arguments
     # This method should return
@@ -21,7 +20,7 @@ class Team(QueryBase):
         # the team_name and team_id columns
         # from the team table for all teams
         # in the database
-        #### YOUR CODE HERE
+  
         teamslq="SELECT team_name, team_id FROM team"
         return self.query(teamslq)
     

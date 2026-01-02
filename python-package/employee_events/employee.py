@@ -7,13 +7,12 @@ from .query_base import QueryBase
 from .sql_execution import QueryMixin
 # Define a subclass of QueryBase
 # called Employee
-#### YOUR CODE HERE
 class Employee(QueryBase):
 
     # Set the class attribute `name`
     # to the string "employee"
     name="employee"
-
+    primID = "employee_id"
     # Define a method called `names`
     # that receives no arguments
     # This method should return a list of tuples

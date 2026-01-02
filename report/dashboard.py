@@ -10,7 +10,8 @@ from .utils import load_model
 Below, we import the parent classes
 you will use for subclassing
 """
-from base_components import (
+# . added so the code can run using uvicorn report.dashboard:app --reload
+from .base_components import (
     Dropdown,
     BaseComponent,
     Radio,
@@ -18,7 +19,7 @@ from base_components import (
     DataTable
     )
 
-from combined_components import FormGroup, CombinedComponent
+from .combined_components import FormGroup, CombinedComponent
 
 
 # Create a subclass of base_components/dropdown
@@ -57,7 +58,11 @@ class Header(BaseComponent):
         # Using the model argument for this method
         # return a fasthtml H1 objects
         # containing the model's name attribute
-        return H1(model.name)
+        if model.name == 'employee':
+            title = 'Employee Performance'
+        else:
+            title = 'Taem Performance'
+        return H1(title)
 
 # Create a subclass of base_components/MatplotlibViz
 # called `LineChart`
@@ -74,7 +79,7 @@ class LineChart(MatplotlibViz):
         assets = assets.fillna(0)
         # User the pandas .set_index method to set
         # the date column as the index
-        assets = assets.set_index('Day')
+        assets = assets.set_index('event_date')
         # Sort the index
         assets = assets.sort_index()
         # Use the .cumsum method to change the data
@@ -100,7 +105,7 @@ class LineChart(MatplotlibViz):
         # the border color and font color to black. 
         # Reference the base_components/matplotlib_viz file 
         # to inspect the supported keyword arguments
-        self.set_axis_styling(axs, border='black', fontcolor='black')
+        self.set_axis_styling(axs, bordercolor='black', fontcolor='black')
         # Set title and labels for x and y axis
         axs.set_title('Cumulative Events')
         axs.set_xlabel('Day')
@@ -140,10 +145,12 @@ class BarChart(MatplotlibViz):
         
         if model.name == 'team':
             pred=md.mean()
+            
         # Otherwise set `pred` to the first value
         # of the predict_proba output
         else:
             pred=proba[0,0]
+            
         # Initialize a matplotlib subplot
         #### YOUR CODE HERE
         fig, ax = plt.subplots()
@@ -198,27 +205,23 @@ class DashboardFilters(FormGroup):
     
 # Create a subclass of CombinedComponents
 # called `Report`
-#### YOUR CODE HERE
-class Report(CombinedComponents):
+class Report(CombinedComponent):
     # Set the `children`
     # class attribute to a list
     # containing initialized instances 
     # of the header, dashboard filters,
     # data visualizations, and notes table
-    #### YOUR CODE HERE
     children = [Header(),DashboardFilters(),Visualizations(),NotesTable()]
 # Initialize a fasthtml app 
 #### YOUR CODE HERE
 app = FastHTML()
 # Initialize the `Report` class
-#### YOUR CODE HERE
 report = Report()
 
 # Create a route for a get request
 # Set the route's path to the root
-#### YOUR CODE HERE
-@app.route('/')
-def get():
+@app.get('/')
+def get_root():
     # Call the initialized report
     # pass the integer 1 and an instance
     # of the Employee class as arguments
@@ -232,8 +235,8 @@ def get():
 # an ID of `2`. 
 # parameterize the employee ID 
 # to a string datatype
-@app.route('/employee/{employee_id} ')
-def get(employee_id:str):
+@app.get('/employee/{employee_id}')
+def get_emp(employee_id:str):
     # Call the initialized report
     # pass the ID and an instance
     # of the Employee SQL class as arguments
@@ -247,8 +250,8 @@ def get(employee_id:str):
 # an ID of `2`. 
 # parameterize the team ID 
 # to a string datatype
-@app.route('/team/{team_id}')
-def get(team_id:str):
+@app.get('/team/{team_id}')
+def get_team(team_id:str):
     # Call the initialized report
     # pass the id and an instance
     # of the Team SQL class as arguments
@@ -282,3 +285,4 @@ async def update_data(r):
 
 
 serve()
+
