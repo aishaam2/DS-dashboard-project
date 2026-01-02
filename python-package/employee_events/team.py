@@ -7,14 +7,12 @@ class Team(QueryBase):
     # Set the class attribute `name`
     # to the string "team"
     name = "team"
-    primID =  "team_id"
+    primID = "team_id"
     # Define a `names` method
     # that receives no arguments
     # This method should return
     # a list of tuples from an sql execution
     def names(self):
-       
-        
         # Query 5
         # Write an SQL query that selects
         # the team_name and team_id columns
@@ -30,7 +28,6 @@ class Team(QueryBase):
     # This method should return
     # a list of tuples from an sql execution
     def username(self,ID):
-    
         # Query 6
         # Write an SQL query
         # that selects the team_name column

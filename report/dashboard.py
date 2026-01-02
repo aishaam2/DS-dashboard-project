@@ -10,7 +10,7 @@ from .utils import load_model
 Below, we import the parent classes
 you will use for subclassing
 """
-# . added so the code can run using uvicorn report.dashboard:app --reload
+# Added relative import (.) so the code works with `uvicorn report.dashboard:app --reload`
 from .base_components import (
     Dropdown,
     BaseComponent,
@@ -126,26 +126,20 @@ class BarChart(MatplotlibViz):
         # pass the `asset_id` to the `.model_data` method
         # to receive the data that can be passed to the machine
         # learning model
-        
         mdl=model.model_data(entity_id)
         # Using the predictor class attribute
         # pass the data to the `predict_proba` method
-        
         proba = self.predictor.predict_proba(mdl)
         # Index the second column of predict_proba output
         # The shape should be (<number of records>, 1)
-        
         md= proba[:, [1]]
-        
         # Below, create a `pred` variable set to
         # the number we want to visualize
         
         # If the model's name attribute is "team"
         # We want to visualize the mean of the predict_proba output
-        
         if model.name == 'team':
             pred=md.mean()
-            
         # Otherwise set `pred` to the first value
         # of the predict_proba output
         else:

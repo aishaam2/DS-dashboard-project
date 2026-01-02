@@ -10,7 +10,7 @@ class QueryBase(QueryMixin):
     # Create a class attribute called `name`
     # set the attribute to an empty string
     name=""
-    primID = "" # so we can join the tables
+    primID = "" # so we can join the tables by using thier id
     # Define a `names` method that receives
     # no passed arguments
     def names(self):
@@ -21,8 +21,6 @@ class QueryBase(QueryMixin):
     # that receives an `id` argument
     # This method should return a pandas dataframe
     def event_counts(self,id):
-       
-
         # QUERY 1
         # Write an SQL query that groups by `event_date`
         # and sums the number of positive and negative events
@@ -31,7 +29,6 @@ class QueryBase(QueryMixin):
         # Use f-string formatting to set the name
         # of id columns used for joining
         # order by the event_date column
-        
        sqlquery = f'''SELECT event_date,
         SUM(positive_events) positive_events,
         SUM(negative_events) negative_events
@@ -46,7 +43,6 @@ class QueryBase(QueryMixin):
     # Define a `notes` method that receives an id argument
     # This function should return a pandas dataframe
     def notes(self,id):
-         
         # QUERY 2
         # Write an SQL query that returns `note_date`, and `note`
         # from the `notes` table
